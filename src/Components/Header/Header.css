@@ -1,0 +1,14 @@
+.App-header {
+    text-align: center;
+  }
+  
+  .image {
+    width: 370px;
+    margin-top: 30px;
+  }
+  @media only screen and (max-width: 770px) {
+
+    .image {
+      width: 100%;
+    }
+  }
