@@ -1,4 +1,4 @@
-import React, {useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 import CountUp from 'react-countup';
 import { GlobalDataContext } from '../../Context/GlobalState';
@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GlobalStatistics() {
     const classes = useStyles();
-    const {globalStatisticsData} = useContext(GlobalDataContext);
-   
+    const { globalStatisticsData } = useContext(GlobalDataContext);
+
     return (
         <div className={classes.root}>
             <Grid container spacing={3}>
@@ -32,7 +32,7 @@ export default function GlobalStatistics() {
                             Coronavirus Cases:
                         </Typography>
                         <Typography variant="h4" gutterBottom style={{ color: '#248BE5' }}>
-                            <CountUp start={0} end={globalStatisticsData && globalStatisticsData.results && globalStatisticsData.results[0].total_cases} duration={2.75} separator="," />
+                            <CountUp start={0} end={globalStatisticsData && globalStatisticsData.total_cases} duration={2.75} separator="," />
                         </Typography>
                     </Paper>
                 </Grid>
@@ -42,7 +42,7 @@ export default function GlobalStatistics() {
                             ACTIVE CASES:
                         </Typography>
                         <Typography variant="h4" gutterBottom style={{ color: '#FAA16B' }}>
-                            <CountUp start={0} end={globalStatisticsData && globalStatisticsData.results && globalStatisticsData.results[0].total_unresolved} duration={2.75} separator="," />
+                            <CountUp start={0} end={globalStatisticsData && globalStatisticsData.total_unresolved} duration={2.75} separator="," />
                         </Typography>
                     </Paper>
                 </Grid>
@@ -52,7 +52,7 @@ export default function GlobalStatistics() {
                             Deaths:
                         </Typography>
                         <Typography variant="h4" gutterBottom style={{ color: '#FB4C4A' }}>
-                            <CountUp start={0} end={globalStatisticsData && globalStatisticsData.results && globalStatisticsData.results[0].total_deaths} duration={2.75} separator="," />
+                            <CountUp start={0} end={globalStatisticsData && globalStatisticsData.total_deaths} duration={2.75} separator="," />
                         </Typography>
                     </Paper>
                 </Grid>
@@ -62,7 +62,7 @@ export default function GlobalStatistics() {
                             Recovered:
                         </Typography>
                         <Typography variant="h4" gutterBottom style={{ color: '#8ACA2B' }}>
-                            <CountUp start={0} end={globalStatisticsData && globalStatisticsData.results && globalStatisticsData.results[0].total_recovered} duration={2.75} separator="," />
+                            <CountUp start={0} end={globalStatisticsData && globalStatisticsData.total_recovered} duration={2.75} separator="," />
                         </Typography>
                     </Paper>
                 </Grid>
@@ -72,7 +72,7 @@ export default function GlobalStatistics() {
                             Total New Cases(24 HRS):
                         </Typography>
                         <Typography variant="h4" gutterBottom style={{ color: '#248BE5' }}>
-                            <CountUp start={0} end={globalStatisticsData && globalStatisticsData.results && globalStatisticsData.results[0].total_new_cases_today} duration={2.75} separator="," />
+                            <CountUp start={0} end={globalStatisticsData && globalStatisticsData.total_new_cases_today} duration={2.75} separator="," />
                         </Typography>
                     </Paper>
                 </Grid>
@@ -82,20 +82,22 @@ export default function GlobalStatistics() {
                             Total New Deaths(24 HRS):
                         </Typography>
                         <Typography variant="h4" gutterBottom style={{ color: '#FB4C4A' }}>
-                            <CountUp start={0} end={globalStatisticsData && globalStatisticsData.results && globalStatisticsData.results[0].total_new_deaths_today} duration={2.75} separator="," />
+                            <CountUp start={0} end={globalStatisticsData && globalStatisticsData.total_new_deaths_today} duration={2.75} separator="," />
                         </Typography>
                     </Paper>
                 </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={3}>
-                    <Paper elevation={3} className={classes.paper}>
-                        <Typography variant="subtitle2" gutterBottom>
-                            Total Affected Countries:
+                {globalStatisticsData.total_affected_countries ?
+                    <Grid item xs={12} sm={6} md={6} lg={3}>
+                        <Paper elevation={3} className={classes.paper}>
+                            <Typography variant="subtitle2" gutterBottom>
+                                Total Affected Countries:
                         </Typography>
-                        <Typography variant="h4" gutterBottom style={{ color: '#248BE5' }}>
-                            <CountUp start={0} end={globalStatisticsData && globalStatisticsData.results && globalStatisticsData.results[0].total_affected_countries} duration={2.75} separator="," />
-                        </Typography>
-                    </Paper>
-                </Grid>
+                            <Typography variant="h4" gutterBottom style={{ color: '#248BE5' }}>
+                                <CountUp start={0} end={globalStatisticsData && globalStatisticsData.total_affected_countries} duration={2.75} separator="," />
+                            </Typography>
+                        </Paper>
+                    </Grid>
+               : null }
             </Grid>
         </div>
     );

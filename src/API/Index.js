@@ -1,35 +1,25 @@
 import React, { useState, useContext } from 'react';
 
 const url = 'https://api.thevirustracker.com/free-api'; //Base Api for Fetch COVID-19 Data
+const url2 = 'https://covid19.mathdro.id/api'; //Base Api2 for Fetch COVID-19 Data
 
 //Fetch Global Statistics Data
-export async function FetchGlobalDataStatistica() {
-    const response = await fetch(`${url}?global=stats`);
-    return await response.json();
+export async function FetchGlobalDataStatistica(country) {
+  if(!country || country === "global")
+  {
+  const response = await fetch(`${url}?global=stats`);
+  return await response.json();
+  }
+  const response = await fetch(`${url}?countryTotal=${country}`);
+  return await response.json();
 }
 
 //Fetch Daily Data Globally
 export const fetchDailyChartGlobalData = async () => {
-    const response = await fetch('https://covid19.mathdro.id/api/daily');
-    return await response.json();
+  const response = await fetch(`${url2}/daily`);
+  return await response.json();
 };
 
-//Fetch specified Country Data
-export const fetchCountryWisehData = async (country) => {
-  // let changeableUrl = url;
-
-  // if (country) {
-  //   changeableUrl = `${url}?countryTotal=${country}`;
-  // }
-
-  // try {
-  //   const { data: { confirmed, recovered, deaths, lastUpdate } } = await axios.get(changeableUrl);
-
-  //   return { confirmed, recovered, deaths, lastUpdate };
-  // } catch (error) {
-  //   return error;
-  // }
-};
 //Fetch Daily Data by Country wise
 export const fetchDailyChartDataByCountry = async () => {
   // const response = await fetch(`${url}?countryTimeline=${country}`);
@@ -47,11 +37,8 @@ export const fetchDailyChartDataByCountry = async () => {
 };
 //Fetch Countries
 export const fetchCountries = async () => {
-  // try {
-  //   const { data: { countries } } = await axios.get(`${url}/countries`);
-
-  //   return countries.map((country) => country.name);
-  // } catch (error) {
-  //   return error;
-  // }
+  const response  = await fetch(`${url2}/countries`);
+  const data = await response.json();
+  const {countries} = data;
+  return countries;
 };
