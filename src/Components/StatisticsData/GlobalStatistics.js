@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, {useState, useContext } from 'react';
 import { Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 import CountUp from 'react-countup';
+import { GlobalDataContext } from '../../Context/GlobalState';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,28 +21,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GlobalStatistics() {
     const classes = useStyles();
-    const [globalStatisticsData, setglobalStatisticsData] = useState(); //Use for save Api respose data
-    const [isData, setData] = useState(false); //Flag is for Call Use Effect(Api) on change value
-    const [isFetching, setFetching] = useState(false); //Flag check Data is loaded or not from Api 
-    useEffect(() => {
-        async function fetchData() {
-           try {
-            setFetching(true);
-            const response = await fetch('https://api.thevirustracker.com/free-api?global=stats');
-            let apiData = await response.json()
-            setglobalStatisticsData(apiData);
-            setFetching(false);
-            //console.log("Data = ", globalStatisticsData);
-           } catch (error) {
-               alert(error);
-           }
-        }
-        fetchData();
-    }, [isData]);
-
-    if (isFetching) {
-        return <div>Data Loading.....</div>
-    }
+    const {globalStatisticsData} = useContext(GlobalDataContext);
+   
     return (
         <div className={classes.root}>
             <Grid container spacing={3}>
