@@ -21,20 +21,21 @@ export const fetchDailyChartGlobalData = async () => {
 };
 
 //Fetch Daily Data by Country wise
-export const fetchDailyChartDataByCountry = async () => {
-  // const response = await fetch(`${url}?countryTimeline=${country}`);
-  // const { timelineitems } = await response.json();
-  // const keys = Object.keys(timelineitems["0"]);
-  // const covidData = [];
-  // keys.map(key => {
-  //   return covidData.push({
-  //     confirmed: timelineitems["0"][key]["new_daily_cases"],
-  //     deaths: timelineitems["0"][key]["new_daily_deaths"],
-  //     date: key,
-  //   })
-  // });
-  // setCovidChartData(covidData);
+export const fetchDailyChartDataByCountry = async (country) => {
+  const response = await fetch(`${url}?countryTimeline=${country}`);
+  const { timelineitems } = await response.json();
+  const keys = Object.keys(timelineitems["0"]); //Get index keys that is dates
+  const covidData = [];
+  keys.map(key => {
+    return covidData.push({
+      confirmed: timelineitems["0"][key]["new_daily_cases"],
+      deaths: timelineitems["0"][key]["new_daily_deaths"],
+      date: key,
+    })
+  });
+  return covidData;
 };
+
 //Fetch Countries
 export const fetchCountries = async () => {
   const response  = await fetch(`${url2}/countries`);

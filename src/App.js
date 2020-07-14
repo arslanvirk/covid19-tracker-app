@@ -5,9 +5,10 @@ import Header from './Components/Header/Header';
 import GlobalStatistics from './Components/StatisticsData/GlobalStatistics';
 import Chart from './Components/Chart/Chart';
 import { GlobalDataContext } from './Context/GlobalState'
-import { FetchGlobalDataStatistica, fetchDailyChartGlobalData, fetchCountryWisehData } from './API/Index';
+import { FetchGlobalDataStatistica, fetchDailyChartGlobalData, fetchDailyChartDataByCountry } from './API/Index';
 
 import { CountryPicker } from './Components/CountryPicker/CountryPicker';
+import ButtomAppBar from './Components/App Bar/AppBar';
 
 function App() {
   const [globalStatisticsData, setGlobalStatisticsData] = useState({}); //Use for save Global Api respose data
@@ -17,7 +18,8 @@ function App() {
   const [isGlobalData, setGlobalData] = useState(false);
   const [onChangeData, setOnChangeData] = useState(false);
   const [onChangeCountryData, setOnChangeCountryData] = useState("");
-
+ 
+  //Global Statistics Data Feching
   useEffect(() => {
     async function fetchData() {
       try {
@@ -41,17 +43,21 @@ function App() {
     fetchData();
   }, [isGlobalData]);
 
+  //Global Chart Data Feching
   useEffect(() => {
     async function fetChartchData() {
       try {
         const data = await fetchDailyChartGlobalData();
         const dailyData = data.map(({ confirmed, deaths, reportDate: date }) => ({ confirmed: confirmed.total, deaths: deaths.total, date }));
         setCovidChartData(dailyData);
+        setFetching(false);
       } catch (error) {
         alert(error);
       }
     }
-    fetChartchData();
+    setTimeout(() => {
+      fetChartchData();
+    }, 1000);
   }, [isGlobalData]);
 
   function handleCountryChange(selectedcountry) {
@@ -64,11 +70,12 @@ function App() {
     else
       setGlobalData(!isGlobalData);
   }
+
+  //Country Statistics Data Feching
   useEffect(() => {
     async function handleCountryChangeData() {
       try {
         const { countrydata } = await FetchGlobalDataStatistica(onChangeCountryData);
-        console.log("ResData", countrydata);
         const covidCountryData = {
           total_cases: countrydata && countrydata[0].total_cases,
           total_deaths: countrydata && countrydata[0].total_deaths,
@@ -78,13 +85,29 @@ function App() {
           total_new_deaths_today: countrydata && countrydata[0].total_new_deaths_today
         }
         setGlobalStatisticsData(covidCountryData);
-        //this.setState({ data, country: country });
+        setFetching(false);
       } catch (error) {
         alert(error);
       }
     }
     if (onChangeData)
       handleCountryChangeData();
+  }, [isData]);
+  
+  //Country Chart Data Feching
+  useEffect(() => {
+    async function fetchDailyChartCountryData() {
+      try {
+        const data = await fetchDailyChartDataByCountry(onChangeCountryData);
+        //const dailyData = data.map(({ confirmed, deaths, reportDate: date }) => ({ confirmed: confirmed.total, deaths: deaths.total, date }));
+        setCovidChartData(data);
+        setFetching(false);
+      } catch (error) {
+        alert(error);
+      }
+    }
+    if (onChangeData)
+    fetchDailyChartCountryData();
   }, [isData]);
 
   if (isFetching) {
@@ -98,7 +121,8 @@ function App() {
         <Header />
         <GlobalStatistics />
         <CountryPicker handleCountryChange={handleCountryChange} /> {/* Pass Method as reference */}
-        <Chart data={covidChartData} />
+        <Chart data={covidChartData} country={onChangeCountryData}/>
+        <ButtomAppBar/>
       </div>
     </GlobalDataContext.Provider>
   );
