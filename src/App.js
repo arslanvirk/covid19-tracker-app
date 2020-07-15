@@ -57,7 +57,7 @@ function App() {
     }
     setTimeout(() => {
       fetChartchData();
-    }, 1000);
+    }, 3000);
   }, [isGlobalData]);
 
   function handleCountryChange(selectedcountry) {

@@ -13,6 +13,12 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 20,
         width: '75%',
         maxWidth: 1050,
+        [theme.breakpoints.down('sm')]: {
+          width: '100%',
+        },
+        [theme.breakpoints.up('md')]: {
+          width: '100%',
+        },
         //  backgroundColor: 'rgb(250, 250,250)'
     },
     paper: {
@@ -22,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 export default function Chart({ data, country}) {
-    // defaults.global.maintainAspectRatio = false
+     //defaults.global.maintainAspectRatio = false
     const classes = useStyles();
     const { globalStatisticsData } = useContext(GlobalDataContext);
 
@@ -88,10 +94,10 @@ export default function Chart({ data, country}) {
               ],
             }}
             options={{
-              legend: { display: true,
+              legend: { display: true, 
                 },
               title: { display: true, text: `Current statistics in ${country ? country : 'Global'}` },
-            }}
+            }} 
           />
         ) : null
       );
@@ -99,19 +105,19 @@ export default function Chart({ data, country}) {
     return (
         <div className={classes.root}>
             <Grid container justify="center" spacing={3}>
-                <Grid item xs={12} sm={12} md={6} lg={12}>
+                <Grid item xs={12} sm={12} md={12} lg={6}>
                     {/* <article className="canvas-container"> */}
                     <Paper elevation={3} className={classes.paper}>
                         {lineChart}
                     </Paper>
                     {/* </article> */}
                 </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={12}>
+                <Grid item xs={12} sm={12} md={12} lg={6}>
                     <Paper elevation={3} className={classes.paper}>
                         {barChart}
                     </Paper>
                 </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={12}>
+                <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Paper elevation={3} className={classes.paper}>
                         {pieChart}
                     </Paper>
